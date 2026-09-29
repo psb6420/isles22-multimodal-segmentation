@@ -1,0 +1,287 @@
+{
+  "models": {
+    "501": {
+      "input": "DWI",
+      "n_cases": 50,
+      "mean_dice": 0.7699655251820161,
+      "mean_dice_nnunet_empty_excluded": 0.7652709440632818,
+      "both_empty_cases": 1,
+      "mean_dice_ci95": [
+        0.7061081118161381,
+        0.8246739018710775
+      ],
+      "mean_lesion_f1": 0.7140494110453449,
+      "mean_lesion_f1_ci95": [
+        0.6408765175949075,
+        0.7825108151357776
+      ],
+      "small_lesion_recall_micro": 0.4668141592920354,
+      "small_lesion_recall_micro_ci95": [
+        0.3257207306338028,
+        0.6579014500537056
+      ],
+      "small_lesions_found": 211,
+      "small_lesions_total": 452,
+      "mean_hd95_mm": 7.493973744802937,
+      "median_hd95_mm": 2.8284270890652055,
+      "hd95_defined_cases": 49,
+      "mean_absolute_volume_difference_ml": 10.500853149463449,
+      "mean_absolute_lesion_count_difference": 5.3,
+      "reference_lesions_total": 505,
+      "predicted_lesions_total": 342,
+      "detected_reference_lesions_total": 261,
+      "false_positive_lesions_total": 50
+    },
+    "502": {
+      "input": "DWI+ADC",
+      "n_cases": 50,
+      "mean_dice": 0.7619495422581225,
+      "mean_dice_nnunet_empty_excluded": 0.7570913696511453,
+      "both_empty_cases": 1,
+      "mean_dice_ci95": [
+        0.6953433109789466,
+        0.819717845027685
+      ],
+      "mean_lesion_f1": 0.7242458103828261,
+      "mean_lesion_f1_ci95": [
+        0.6513374038706391,
+        0.7927004180133591
+      ],
+      "small_lesion_recall_micro": 0.4756637168141593,
+      "small_lesion_recall_micro_ci95": [
+        0.332356473351528,
+        0.6615384615384615
+      ],
+      "small_lesions_found": 215,
+      "small_lesions_total": 452,
+      "mean_hd95_mm": 7.725915459548206,
+      "median_hd95_mm": 2.8284271155379463,
+      "hd95_defined_cases": 49,
+      "mean_absolute_volume_difference_ml": 9.987953875799414,
+      "mean_absolute_lesion_count_difference": 5.02,
+      "reference_lesions_total": 505,
+      "predicted_lesions_total": 310,
+      "detected_reference_lesions_total": 265,
+      "false_positive_lesions_total": 34
+    },
+    "503": {
+      "input": "DWI+FLAIR",
+      "n_cases": 50,
+      "mean_dice": 0.7673727238607458,
+      "mean_dice_nnunet_empty_excluded": 0.7626252284293324,
+      "both_empty_cases": 1,
+      "mean_dice_ci95": [
+        0.7067958522747898,
+        0.8197904069213415
+      ],
+      "mean_lesion_f1": 0.7286491613181861,
+      "mean_lesion_f1_ci95": [
+        0.6624869112744366,
+        0.7926927568240287
+      ],
+      "small_lesion_recall_micro": 0.4889380530973451,
+      "small_lesion_recall_micro_ci95": [
+        0.35169375116409013,
+        0.6785773415326395
+      ],
+      "small_lesions_found": 221,
+      "small_lesions_total": 452,
+      "mean_hd95_mm": 8.137881671872737,
+      "median_hd95_mm": 3.5289258385563693,
+      "hd95_defined_cases": 50,
+      "mean_absolute_volume_difference_ml": 12.05675771815898,
+      "mean_absolute_lesion_count_difference": 5.14,
+      "reference_lesions_total": 505,
+      "predicted_lesions_total": 336,
+      "detected_reference_lesions_total": 271,
+      "false_positive_lesions_total": 41
+    },
+    "504": {
+      "input": "DWI+ADC+FLAIR",
+      "n_cases": 50,
+      "mean_dice": 0.7711759239569288,
+      "mean_dice_nnunet_empty_excluded": 0.766506044854009,
+      "both_empty_cases": 1,
+      "mean_dice_ci95": [
+        0.706766735910179,
+        0.8268096309637206
+      ],
+      "mean_lesion_f1": 0.7082532867602361,
+      "mean_lesion_f1_ci95": [
+        0.6301192052977947,
+        0.7816138813409165
+      ],
+      "small_lesion_recall_micro": 0.504424778761062,
+      "small_lesion_recall_micro_ci95": [
+        0.37154840351625373,
+        0.6822472833419186
+      ],
+      "small_lesions_found": 228,
+      "small_lesions_total": 452,
+      "mean_hd95_mm": 8.765004629173939,
+      "median_hd95_mm": 3.1462644323946343,
+      "hd95_defined_cases": 50,
+      "mean_absolute_volume_difference_ml": 10.983779764327858,
+      "mean_absolute_lesion_count_difference": 4.94,
+      "reference_lesions_total": 505,
+      "predicted_lesions_total": 346,
+      "detected_reference_lesions_total": 278,
+      "false_positive_lesions_total": 54
+    }
+  },
+  "paired_comparisons": {
+    "503_minus_501": {
+      "target": "DWI+FLAIR",
+      "baseline": "DWI",
+      "mean_dice_difference": -0.0025928013212704174,
+      "mean_dice_difference_ci95": [
+        -0.01579006319437517,
+        0.010943845330429035
+      ],
+      "dice_better_cases": 24,
+      "dice_worse_cases": 24,
+      "dice_tied_cases": 2,
+      "mean_lesion_f1_difference": 0.014599750272841239,
+      "mean_lesion_f1_difference_ci95": [
+        -0.016002505599235536,
+        0.04297065867838681
+      ],
+      "lesion_f1_better_cases": 19,
+      "lesion_f1_worse_cases": 7,
+      "lesion_f1_tied_cases": 24,
+      "mean_hd95_difference_mm": -0.23260623454540405,
+      "mean_hd95_difference_mm_ci95": [
+        -1.0459279174715443,
+        0.41472199909059976
+      ],
+      "hd95_paired_cases": 49,
+      "mean_absolute_volume_error_difference_ml": 1.5559045686955368,
+      "mean_absolute_volume_error_difference_ml_ci95": [
+        0.13623214828044738,
+        4.040093787943641
+      ],
+      "small_lesion_recall_difference": 0.022123893805309713,
+      "small_lesion_recall_difference_ci95": [
+        -0.008824180114523655,
+        0.05405405405405406
+      ]
+    },
+    "504_minus_502": {
+      "target": "DWI+ADC+FLAIR",
+      "baseline": "DWI+ADC",
+      "mean_dice_difference": 0.009226381698806442,
+      "mean_dice_difference_ci95": [
+        -0.008627825777457859,
+        0.03340522467590903
+      ],
+      "dice_better_cases": 28,
+      "dice_worse_cases": 19,
+      "dice_tied_cases": 3,
+      "mean_lesion_f1_difference": -0.015992523622589943,
+      "mean_lesion_f1_difference_ci95": [
+        -0.05595347756484045,
+        0.02118616198688878
+      ],
+      "lesion_f1_better_cases": 14,
+      "lesion_f1_worse_cases": 14,
+      "lesion_f1_tied_cases": 22,
+      "mean_hd95_difference_mm": 0.15813308274870536,
+      "mean_hd95_difference_mm_ci95": [
+        -1.1495898993047482,
+        1.6186354462849852
+      ],
+      "hd95_paired_cases": 49,
+      "mean_absolute_volume_error_difference_ml": 0.9958258885284411,
+      "mean_absolute_volume_error_difference_ml_ci95": [
+        -0.949191444378316,
+        3.2959500983185177
+      ],
+      "small_lesion_recall_difference": 0.028761061946902644,
+      "small_lesion_recall_difference_ci95": [
+        -0.004115651464136293,
+        0.055350872712879404
+      ]
+    },
+    "504_minus_501": {
+      "target": "DWI+ADC+FLAIR",
+      "baseline": "DWI",
+      "mean_dice_difference": 0.0012103987749127081,
+      "mean_dice_difference_ci95": [
+        -0.013827794621523755,
+        0.01654638395447363
+      ],
+      "dice_better_cases": 28,
+      "dice_worse_cases": 20,
+      "dice_tied_cases": 2,
+      "mean_lesion_f1_difference": -0.005796124285108744,
+      "mean_lesion_f1_difference_ci95": [
+        -0.045410115004768235,
+        0.03182439668580846
+      ],
+      "lesion_f1_better_cases": 16,
+      "lesion_f1_worse_cases": 11,
+      "lesion_f1_tied_cases": 23,
+      "mean_hd95_difference_mm": 0.3900747974939738,
+      "mean_hd95_difference_mm_ci95": [
+        -0.9324790353143364,
+        1.87826091827717
+      ],
+      "hd95_paired_cases": 49,
+      "mean_absolute_volume_error_difference_ml": 0.48292661486440935,
+      "mean_absolute_volume_error_difference_ml_ci95": [
+        -0.5058116566734934,
+        1.5919309978979188
+      ],
+      "small_lesion_recall_difference": 0.03761061946902655,
+      "small_lesion_recall_difference_ci95": [
+        0.0033003300330033377,
+        0.06009389807338068
+      ]
+    },
+    "502_minus_501": {
+      "target": "DWI+ADC",
+      "baseline": "DWI",
+      "mean_dice_difference": -0.008015982923893735,
+      "mean_dice_difference_ci95": [
+        -0.030462473726983068,
+        0.009001098425817403
+      ],
+      "dice_better_cases": 21,
+      "dice_worse_cases": 25,
+      "dice_tied_cases": 4,
+      "mean_lesion_f1_difference": 0.0101963993374812,
+      "mean_lesion_f1_difference_ci95": [
+        -0.02143009022974301,
+        0.0385624211646392
+      ],
+      "lesion_f1_better_cases": 18,
+      "lesion_f1_worse_cases": 8,
+      "lesion_f1_tied_cases": 24,
+      "mean_hd95_difference_mm": 0.23194171474526845,
+      "mean_hd95_difference_mm_ci95": [
+        -0.6041517217690282,
+        1.1590358839605233
+      ],
+      "hd95_paired_cases": 49,
+      "mean_absolute_volume_error_difference_ml": -0.512899273664032,
+      "mean_absolute_volume_error_difference_ml_ci95": [
+        -2.2180331006786695,
+        0.9195253014596521
+      ],
+      "small_lesion_recall_difference": 0.008849557522123908,
+      "small_lesion_recall_difference_ci95": [
+        -0.02409638554216864,
+        0.036458729103343496
+      ]
+    }
+  },
+  "configuration": {
+    "small_lesion_max_ml": 1.0,
+    "bootstrap_iterations": 10000,
+    "seed": 2026,
+    "lesion_connectivity": 26,
+    "lesion_match": "any_voxel_overlap_as_in_official_isles22_eval",
+    "hd95": "pooled_bidirectional_surface_distance_percentile_95_mm",
+    "hd95_empty_policy": "both_empty_zero_one_empty_undefined"
+  }
+}

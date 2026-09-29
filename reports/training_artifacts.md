@@ -34,7 +34,7 @@
 | Dataset503_ISLES22_DWI_FLAIR | 0.7626252284 | 50 |
 | Dataset504_ISLES22_DWI_ADC_FLAIR | 0.7665060449 | 50 |
 
-이 수치는 nnU-Net의 `validation/summary.json`에 기록된 voxel-wise Dice이다. lesion-wise F1, small-lesion recall, HD95, 병변 부피 오차 및 통계 검정은 아직 포함하지 않는다.
+이 수치는 nnU-Net의 `validation/summary.json`에 기록된 voxel-wise Dice이다. 병변 단위 F1, 1 mL 미만 병변 recall, HD95, 부피 오차 및 paired bootstrap 분석은 [상세 평가 보고서](flair_ablation_report.md)에 별도로 기록했다. 반복 학습과 공식 테스트 평가는 아직 수행하지 않았다.
 
 ## 주요 경로
 

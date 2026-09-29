@@ -73,7 +73,7 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 - 세 모달리티 모델이 확실히 더 좋다는 결론
 - FLAIR가 작은 병변 검출에 도움이 된다는 결론
 
-현재 수치는 한 번의 환자 분할에서 얻은 평균 voxel Dice다. 환자별 분포, 병변 단위 지표, 신뢰구간과 반복 실험이 없기 때문에 작은 차이는 우연일 수 있다.
+초기 결과는 한 번의 환자 분할에서 얻은 평균 voxel Dice였다. 이후 병변 단위 지표와 환자 단위 paired bootstrap 분석을 추가했으며, [상세 평가 보고서](../reports/flair_ablation_report.md)에 결과를 정리했다. FLAIR를 직접 추가한 두 비교에서 Dice·병변 F1·작은 병변 recall의 95% 구간은 모두 0을 포함했다. 반복 실험과 외부 검증이 없으므로 작은 차이를 일반화할 수는 없다.
 
 ## 5. nnU-Net을 먼저 사용한 이유
 
@@ -329,10 +329,10 @@ Foundation Model 또는 LoRA가 성공적이라고 판단하려면 단순히 평
 
 ## 14. 권장 작업 순서
 
-1. 현재 네 nnU-Net 모델의 환자별 예측 경로와 split을 고정한다.
-2. lesion-wise F1, small-lesion recall, HD95와 병변 부피 오차 코드를 완성한다.
-3. 네 모델의 환자별 paired 결과와 bootstrap 신뢰구간을 계산한다.
-4. 오류 사례를 병변 크기와 다발성 여부에 따라 시각화한다.
+1. 완료: 네 nnU-Net 모델의 예측과 환자 단위 split 확인.
+2. 완료: lesion-wise F1, 1 mL 미만 병변 recall, HD95, 병변 부피 오차 계산.
+3. 완료: 같은 환자끼리 paired 비교하고 bootstrap 신뢰구간 계산.
+4. 다음: 오류 사례를 병변 크기와 다발성 여부에 따라 시각화한다.
 5. Foundation Model의 정확한 논문, 체크포인트, 입력 채널과 사전학습 데이터를 확인한다.
 6. ISLES 중복이 없는 모델을 주 Foundation Model로 확정한다.
 7. DWI와 DWI+ADC Full fine-tuning을 실행한다.

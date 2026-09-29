@@ -34,6 +34,7 @@ reports/flair_alignment_proxy.csv
 reports/flair_alignment_summary.json
 reports/isles22_summary.json
 reports/flair_alignment_montage*.png
+reports/detailed_evaluation/
 splits/
 
 # OS/editor files

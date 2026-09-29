@@ -54,7 +54,7 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 
 현재 최고값은 세 모달리티 모델이지만 DWI 단독과의 차이는 약 `+0.0012`로 매우 작다. DWI+ADC는 이번 단일 분할에서 DWI 단독보다 낮았다. 따라서 이 결과만으로 ADC가 불필요하거나 세 모달리티가 우수하다고 결론 내릴 수 없다.
 
-위 수치는 nnU-Net `validation/summary.json`의 voxel-wise Dice다. 아직 lesion-wise F1, small-lesion recall, HD95, 병변 부피 오차, 반복 seed/교차검증 및 신뢰구간은 계산하지 않았다. 최종 연구 결론은 이 평가를 추가한 뒤 내린다.
+위 수치는 nnU-Net `validation/summary.json`의 voxel-wise Dice다. 네 모델의 병변 F1, 작은 병변 recall, HD95, 부피 오차와 환자 단위 paired bootstrap 분석은 [상세 평가 보고서](reports/flair_ablation_report.md)에 정리했다. FLAIR를 직접 추가한 두 비교에서 Dice·병변 F1·작은 병변 recall의 95% 구간은 모두 0을 포함했다. 반복 seed/교차검증과 외부 검증은 아직 수행하지 않았다.
 
 ## 검토한 다른 모델과 역할
 
@@ -101,6 +101,10 @@ ISLES'22 원본 확인
 - `scripts/run_queue.sh`: 여러 조건 순차 학습
 - `reports/training_artifacts.md`: 로컬 학습 산출물 위치와 결과 요약
 - `reports/model_comparison.csv`: 기본 voxel Dice 비교표
+- `scripts/evaluate_validation.py`: 검증 50건의 병변·경계 지표와 paired bootstrap 계산
+- `reports/flair_ablation_report.md`: FLAIR 추가 효과의 상세 평가 및 해석
+- `reports/evaluation_summary.json`: 환자 식별자 없는 집계 결과
+- `scripts/plot_flair_ablation.py`와 `reports/flair_effect_ci.png`: FLAIR 효과의 환자 단위 신뢰구간 그림
 - `docs/RESEARCH_DIRECTION.md`: 신규 팀원을 위한 연구 배경, 모델 선택과 향후 실험 방향
 
 ## 재현 환경
@@ -132,15 +136,11 @@ bash scripts/train_one.sh 501
 
 FLAIR 조건은 먼저 정합 영상을 생성하고 `--registered-flair-root`를 전달해야 한다. 원본은 수정하지 않고 파생 결과를 별도 디렉터리에 저장한다.
 
-## 다음 평가 단계
+## 남은 평가 단계
 
-- lesion-wise F1 및 병변 매칭 규칙 명시
-- 병변 크기 구간별 recall, 특히 small-lesion recall
-- HD95 및 병변 부피 오차
-- 환자별 bootstrap 신뢰구간과 paired 통계 비교
 - 작은 병변, 다발성 병변, 거짓 양성·거짓 음성 사례 시각화
 - 추론 시간과 peak GPU memory 측정
-- 가능하면 반복 seed 또는 5-fold 교차검증
+- 가능한 경우 반복 seed 또는 5-fold 교차검증 및 외부 검증
 
 ## 핵심 참고자료
 
