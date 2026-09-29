@@ -1,0 +1,5 @@
+dataset_id,input_modalities,mean_voxel_dice,n_validation_cases,status
+501,DWI,0.7652709441,50,completed
+502,DWI+ADC,0.7570913697,50,completed
+503,DWI+FLAIR,0.7626252284,50,completed
+504,DWI+ADC+FLAIR,0.7665060449,50,completed

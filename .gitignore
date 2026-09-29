@@ -1,0 +1,42 @@
+# Local Python environments and caches
+.venv*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local dependencies and third-party checkouts
+.deps/
+vendor/
+
+# ISLES data, nnU-Net preprocessing, predictions, and model weights
+nnunet_data/
+data/
+datasets/
+*.nii
+*.nii.gz
+*.mha
+*.nrrd
+*.npz
+*.pth
+*.pt
+*.ckpt
+
+# Machine-specific logs and infrastructure helpers
+logs/
+DISTRIBUTED_RUN.md
+scripts/arm_shutdown_after_remaining.sh
+scripts/watch_shutdown_desktop.sh
+scripts/watch_shutdown_laptop.sh
+
+# Detailed case-level reports and subject identifiers
+reports/isles22_case_audit.csv
+reports/flair_alignment_proxy.csv
+reports/flair_alignment_summary.json
+reports/isles22_summary.json
+reports/flair_alignment_montage*.png
+splits/
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/

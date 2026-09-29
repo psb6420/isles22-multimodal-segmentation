@@ -1,0 +1,4 @@
+# Install torch and torchvision from https://download.pytorch.org/whl/cu126.
+torch==2.12.1+cu126
+torchvision==0.27.1+cu126
+nnunetv2==2.8.1
