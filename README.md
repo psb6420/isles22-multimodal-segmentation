@@ -27,13 +27,15 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 - 중심(center)과 병변 부피를 고려한 고정 환자 단위 분할: 학습 200건 / 검증 50건
 - nnU-Net v2 3D full-resolution 모델 네 조건을 각각 250 epoch 학습
 - 각 조건의 50건 검증 예측 및 softmax 확률 저장
+- 50건의 병변 단위 평가, 작은 병변 분석, 오류 사례 시각화와 추론 비용 측정
+- 기존 fold 0을 유지한 5-fold 환자 분할 준비; 나머지 fold 학습 진행 중 (결과는 미확정)
 
 ## 사용한 모델과 공통 설정
 
 - 모델: nnU-Net v2 2.8.1 `PlainConvUNet`, 3D full-resolution
 - trainer: `nnUNetTrainer_250epochs`
 - configuration: `3d_fullres_common`
-- fold: 0
+- 기존 결과: fold 0. 5-fold 실험에서는 fold 0을 유지하고 1~4를 추가 학습 중
 - target spacing: 2 × 2 × 2 mm
 - patch: 80 × 96 × 80
 - batch size: 2
@@ -54,7 +56,11 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 
 현재 최고값은 세 모달리티 모델이지만 DWI 단독과의 차이는 약 `+0.0012`로 매우 작다. DWI+ADC는 이번 단일 분할에서 DWI 단독보다 낮았다. 따라서 이 결과만으로 ADC가 불필요하거나 세 모달리티가 우수하다고 결론 내릴 수 없다.
 
-위 수치는 nnU-Net `validation/summary.json`의 voxel-wise Dice다. 네 모델의 병변 F1, 작은 병변 recall, HD95, 부피 오차와 환자 단위 paired bootstrap 분석은 [상세 평가 보고서](reports/flair_ablation_report.md)에 정리했다. FLAIR를 직접 추가한 두 비교에서 Dice·병변 F1·작은 병변 recall의 95% 구간은 모두 0을 포함했다. 반복 seed/교차검증과 외부 검증은 아직 수행하지 않았다.
+위 수치는 nnU-Net `validation/summary.json`의 voxel-wise Dice다. 네 모델의 병변 F1, 작은 병변 recall, HD95, 부피 오차와 환자 단위 paired bootstrap 분석은 [상세 평가 보고서](reports/flair_ablation_report.md)에 정리했다. FLAIR를 직접 추가한 두 비교에서 Dice·병변 F1·작은 병변 recall의 95% 구간은 모두 0을 포함했다. 5-fold 교차검증은 진행 중이며 외부 검증은 수행하지 않았다.
+
+검증 50명의 [오류 사례 분석](reports/error_case_analysis.md)도 생성했다. DWI+ADC에 FLAIR를 추가할 때 병변 F1은 14명에서 상승, 14명에서 하락, 22명에서 같았고, 거짓 양성 병변은 19명에서 증가했다. 환자 MRI가 포함된 상세 그림은 로컬에만 보관한다.
+
+RTX 2080에서 동일한 10명을 사용한 [추론 비용 측정](reports/inference_benchmark_summary.json)은 네 모델 모두 약 1.2초/명(모델 로딩·전처리·후처리 포함)이었다. PyTorch의 최대 예약 GPU 메모리는 약 1.0 GiB였다. 한 번의 소규모 측정이므로 정밀한 속도 우열 근거는 아니다.
 
 ## 검토한 다른 모델과 역할
 
@@ -105,6 +111,11 @@ ISLES'22 원본 확인
 - `reports/flair_ablation_report.md`: FLAIR 추가 효과의 상세 평가 및 해석
 - `reports/evaluation_summary.json`: 환자 식별자 없는 집계 결과
 - `scripts/plot_flair_ablation.py`와 `reports/flair_effect_ci.png`: FLAIR 효과의 환자 단위 신뢰구간 그림
+- `scripts/analyze_error_cases.py`와 `reports/error_analysis_summary.json`: 오류 사례의 로컬 시각화와 공개 가능한 집계
+- `reports/error_case_analysis.md`: FLAIR 추가 전후의 오류 유형과 사례 그림의 해석 범위
+- `scripts/benchmark_inference.py`와 `reports/inference_benchmark_summary.json`: 같은 환자 10명의 추론 시간·GPU 메모리 측정
+- `scripts/prepare_fivefold_splits.py`, `scripts/run_fivefold_queue.py`, `scripts/evaluate_crossval.py`: 5-fold 준비·학습·평가
+- `reports/crossval_protocol.md`: 분할과 평가 프로토콜(학습 결과는 아직 진행 중)
 - `docs/RESEARCH_DIRECTION.md`: 신규 팀원을 위한 연구 배경, 모델 선택과 향후 실험 방향
 
 ## 재현 환경
@@ -138,9 +149,8 @@ FLAIR 조건은 먼저 정합 영상을 생성하고 `--registered-flair-root`�
 
 ## 남은 평가 단계
 
-- 작은 병변, 다발성 병변, 거짓 양성·거짓 음성 사례 시각화
-- 추론 시간과 peak GPU memory 측정
-- 가능한 경우 반복 seed 또는 5-fold 교차검증 및 외부 검증
+- 진행 중인 5-fold 교차검증의 나머지 학습·전체 out-of-fold 평가
+- 가능하면 외부 데이터 검증과 반복 seed 실험
 
 ## 핵심 참고자료
 

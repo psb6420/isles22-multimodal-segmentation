@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 DATASET_ID" >&2
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+    echo "Usage: $0 DATASET_ID [FOLD]" >&2
     exit 2
 fi
 
@@ -17,7 +17,11 @@ export nnUNet_compile=false
 dataset_id="$1"
 trainer="nnUNetTrainer_250epochs"
 configuration="3d_fullres_common"
-fold="0"
+fold="${2:-0}"
+if [[ ! "$fold" =~ ^[0-4]$ ]]; then
+    echo "FOLD must be an integer from 0 to 4" >&2
+    exit 2
+fi
 
 train_bin="${NNUNET_TRAIN_BIN:-$(command -v nnUNetv2_train || true)}"
 if [ -z "$train_bin" ]; then

@@ -1,0 +1,35 @@
+{
+  "definition": "One run, ten common fold-0 cases per model; wall time includes model load, preprocessing, TTA prediction, and export",
+  "torch_memory_definition": "Peak PyTorch CUDA reserved memory in predictor process; excludes other processes",
+  "n_cases_per_model": 10,
+  "checkpoint": "checkpoint_final.pth",
+  "fold": 0,
+  "tta": "nnU-Net default mirroring enabled",
+  "gpu_idle_baseline_mib": 56,
+  "models": {
+    "501": {
+      "input": "DWI",
+      "wall_seconds_total": 11.628,
+      "wall_seconds_per_case": 1.163,
+      "torch_peak_reserved_mib": 1034.0
+    },
+    "502": {
+      "input": "DWI+ADC",
+      "wall_seconds_total": 11.547,
+      "wall_seconds_per_case": 1.155,
+      "torch_peak_reserved_mib": 1054.0
+    },
+    "503": {
+      "input": "DWI+FLAIR",
+      "wall_seconds_total": 11.584,
+      "wall_seconds_per_case": 1.158,
+      "torch_peak_reserved_mib": 1054.0
+    },
+    "504": {
+      "input": "DWI+ADC+FLAIR",
+      "wall_seconds_total": 11.687,
+      "wall_seconds_per_case": 1.169,
+      "torch_peak_reserved_mib": 1038.0
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "n_patients": 50,
+  "comparisons": {
+    "DWI_plus_FLAIR": {
+      "multiple_reference_lesions": 40,
+      "small_lesions_found_more": 11,
+      "false_positives_fewer": 14,
+      "f1_higher": 19,
+      "dice_higher": 24,
+      "small_lesions_found_same": 36,
+      "false_positives_same": 29,
+      "f1_same": 24,
+      "dice_lower": 24,
+      "zero_or_one_reference_lesion": 10,
+      "false_positives_more": 7,
+      "f1_lower": 7,
+      "small_lesions_found_fewer": 3,
+      "dice_same": 2
+    },
+    "DWI_ADC_plus_FLAIR": {
+      "multiple_reference_lesions": 40,
+      "small_lesions_found_same": 35,
+      "false_positives_same": 25,
+      "f1_same": 22,
+      "dice_higher": 28,
+      "false_positives_fewer": 6,
+      "f1_higher": 14,
+      "dice_lower": 19,
+      "small_lesions_found_more": 9,
+      "false_positives_more": 19,
+      "zero_or_one_reference_lesion": 10,
+      "f1_lower": 14,
+      "small_lesions_found_fewer": 6,
+      "dice_same": 3
+    }
+  }
+}

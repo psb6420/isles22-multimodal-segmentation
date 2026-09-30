@@ -35,6 +35,8 @@ reports/flair_alignment_summary.json
 reports/isles22_summary.json
 reports/flair_alignment_montage*.png
 reports/detailed_evaluation/
+reports/private_error_analysis/
+reports/private_inference_benchmark/
 splits/
 
 # OS/editor files
