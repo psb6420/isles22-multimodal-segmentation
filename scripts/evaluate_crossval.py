@@ -70,6 +70,25 @@ def render_report(summary: dict[str, object]) -> str:
         )
     lines.extend([
         "",
+        "## 평가 정의와 확인",
+        "",
+        "Dice와 병변 F1은 환자별 값의 평균이다. 양쪽 마스크가 모두 비면 1로 처리한다. nnU-Net은 양쪽이 빈 환자의 Dice를 평균에서 제외하므로 해당 규칙으로도 별도 계산했다.",
+        "nnU-Net 규칙의 전체 Dice는 " + ", ".join(
+            f"{models[key]['input']} {models[key]['mean_dice_nnunet_empty_excluded']:.4f}"
+            for key in DATASETS
+        ) + "이다. 20개 fold별 재계산 Dice는 원본 nnU-Net summary와 오차 1e-10 이내로 일치한다.",
+        "병변은 26-연결 구성요소이며 한 voxel 이상 겹치는 정답 병변을 검출로 센다. 정답과 전혀 겹치지 않는 예측 구성요소는 거짓 양성이다. 일대일 매칭이나 최소 부피 제거는 적용하지 않았다.",
+        "작은 병변 recall은 1 mL 미만 정답 구성요소 전체를 합산한 micro recall이며 본 프로젝트의 추가 지표다. HD95는 양방향 표면 거리의 합친 분포에서 95백분위(mm)다. 양쪽이 비면 0, 한쪽만 비면 미정의로 평균에서 제외한다.",
+        "HD95가 정의된 환자 수는 " + ", ".join(
+            f"{models[key]['input']} {models[key]['hd95_defined_cases']}/250"
+            for key in DATASETS
+        ) + "이다. 따라서 평균 HD95만으로 완전 미검출의 영향을 판단할 수 없다.",
+        "환자 단위 train/validation 교집합 없음, 네 조건의 동일 분할, 환자별 검증 예측 한 번씩 총 250건을 확인했다. 환자별 자료와 영상·가중치는 로컬에만 보관한다.",
+        "",
+        "## 해석",
+        "",
+        "DWI에 ADC를 추가한 평균 Dice 변화는 +0.0066이다. DWI+ADC에 FLAIR를 더하면 평균 Dice와 병변 F1이 소폭 낮아지고 작은 병변 recall은 거의 같았다. 이번 조건에서는 FLAIR의 일관된 추가 이득을 확인하지 못했다. DWI+FLAIR의 평균 Dice가 가장 높지만 유의한 우월성이나 FLAIR의 일반적인 불필요성을 뜻하지 않는다.",
+        "",
         "Fold가 5개뿐이므로 fold 간 표준편차는 불확실성의 대략적인 표시이며 유의성 검정이 아니다."
         " 환자 단위 bootstrap도 같은 학습 모델을 공유하는 환자들의 의존성을 반영하지 못할 수 있어 여기서는 유의성 주장에 사용하지 않았다.",
         "공식 비공개 테스트셋이나 외부 기관 데이터 평가가 아니다.",

@@ -28,14 +28,14 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 - nnU-Net v2 3D full-resolution 모델 네 조건을 각각 250 epoch 학습
 - 각 조건의 50건 검증 예측 및 softmax 확률 저장
 - 50건의 병변 단위 평가, 작은 병변 분석, 오류 사례 시각화와 추론 비용 측정
-- 기존 fold 0을 유지한 5-fold 환자 분할 준비; 나머지 fold 학습 진행 중 (결과는 미확정)
+- 기존 fold 0을 유지한 5-fold 학습 20개 완료; 250명 전체의 out-of-fold 평가와 분할·Dice 검증 완료
 
 ## 사용한 모델과 공통 설정
 
 - 모델: nnU-Net v2 2.8.1 `PlainConvUNet`, 3D full-resolution
 - trainer: `nnUNetTrainer_250epochs`
 - configuration: `3d_fullres_common`
-- 기존 결과: fold 0. 5-fold 실험에서는 fold 0을 유지하고 1~4를 추가 학습 중
+- 기존 결과: fold 0. 5-fold 실험에서는 fold 0을 유지하고 1~4를 추가 학습 완료
 - target spacing: 2 × 2 × 2 mm
 - patch: 80 × 96 × 80
 - batch size: 2
@@ -45,7 +45,22 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 
 이 구현은 SEALS 코드를 그대로 실행한 것이 아니라, **SEALS가 채택한 강력한 nnU-Net 계열 접근에서 연구 질문에 필요한 통제된 모달리티 ablation을 분리해 구현한 것**이다.
 
-## 기본 검증 결과
+## 5-fold 교차검증 결과
+
+250명 각각을 한 번씩 검증한 out-of-fold 결과다. 네 조건의 20개 학습·검증을 모두 RTX 2080에서 완료했다.
+
+| 입력 | 평균 Dice | 병변 F1 | 작은 병변 recall (<1 mL) |
+|---|---:|---:|---:|
+| DWI | 0.7755 | 0.7357 | 0.5326 |
+| DWI + ADC | 0.7822 | 0.7437 | 0.5375 |
+| DWI + FLAIR | 0.7834 | 0.7512 | 0.5394 |
+| DWI + ADC + FLAIR | 0.7800 | 0.7336 | 0.5370 |
+
+표의 Dice는 양쪽 마스크가 빈 경우 1로 처리한다. nnU-Net의 빈 마스크 제외 규칙으로 재계산한 fold별 Dice는 원본 summary와 일치했다. 같은 fold에서 학습·검증 환자의 중복이 없고 네 조건이 동일한 분할을 사용함을 확인했다.
+
+DWI에 ADC를 추가하면 Dice가 +0.0066, DWI+ADC에 FLAIR를 추가하면 -0.0022였다. 작은 차이이며 통계적 우월성을 주장하지 않는다. 이번 설정에서 FLAIR의 일관된 추가 이득은 확인되지 않았다. 기존 fold 0 결과를 본 뒤 연구 방향을 정했으므로 독립적인 최종 테스트로 해석하지 않는다. [전체 결과와 평가 정의](reports/crossval_report.md), [집계 JSON](reports/crossval_summary.json)을 참고한다.
+
+## 초기 단일 fold 검증 결과
 
 | 입력 | Dataset ID | mean voxel Dice |
 |---|---:|---:|
@@ -54,9 +69,9 @@ ISLES'22의 DWI, ADC, FLAIR MRI를 이용해 급성 허혈성 뇌졸중 병변�
 | DWI + FLAIR | 503 | 0.7626 |
 | DWI + ADC + FLAIR | 504 | **0.7665** |
 
-현재 최고값은 세 모달리티 모델이지만 DWI 단독과의 차이는 약 `+0.0012`로 매우 작다. DWI+ADC는 이번 단일 분할에서 DWI 단독보다 낮았다. 따라서 이 결과만으로 ADC가 불필요하거나 세 모달리티가 우수하다고 결론 내릴 수 없다.
+초기 단일 분할의 최고값은 세 모달리티 모델이었지만 DWI 단독과의 차이는 약 `+0.0012`로 매우 작았다. DWI+ADC는 이 단일 분할에서 DWI 단독보다 낮았으나, 위의 5-fold 평균에서는 높았다. 이는 특정 분할만으로 결론을 내리기 어려움을 보여준다.
 
-위 수치는 nnU-Net `validation/summary.json`의 voxel-wise Dice다. 네 모델의 병변 F1, 작은 병변 recall, HD95, 부피 오차와 환자 단위 paired bootstrap 분석은 [상세 평가 보고서](reports/flair_ablation_report.md)에 정리했다. FLAIR를 직접 추가한 두 비교에서 Dice·병변 F1·작은 병변 recall의 95% 구간은 모두 0을 포함했다. 5-fold 교차검증은 진행 중이며 외부 검증은 수행하지 않았다.
+위 수치는 초기 fold 0의 nnU-Net `validation/summary.json` voxel-wise Dice다. 해당 50명의 병변 F1, 작은 병변 recall, HD95, 부피 오차와 환자 단위 paired bootstrap 분석은 [초기 상세 평가 보고서](reports/flair_ablation_report.md)에 정리했다. 해당 두 FLAIR 비교의 Dice·병변 F1·작은 병변 recall의 95% 구간은 모두 0을 포함했다. 외부 검증은 수행하지 않았다.
 
 검증 50명의 [오류 사례 분석](reports/error_case_analysis.md)도 생성했다. DWI+ADC에 FLAIR를 추가할 때 병변 F1은 14명에서 상승, 14명에서 하락, 22명에서 같았고, 거짓 양성 병변은 19명에서 증가했다. 환자 MRI가 포함된 상세 그림은 로컬에만 보관한다.
 
@@ -115,7 +130,8 @@ ISLES'22 원본 확인
 - `reports/error_case_analysis.md`: FLAIR 추가 전후의 오류 유형과 사례 그림의 해석 범위
 - `scripts/benchmark_inference.py`와 `reports/inference_benchmark_summary.json`: 같은 환자 10명의 추론 시간·GPU 메모리 측정
 - `scripts/prepare_fivefold_splits.py`, `scripts/run_fivefold_queue.py`, `scripts/evaluate_crossval.py`: 5-fold 준비·학습·평가
-- `reports/crossval_protocol.md`: 분할과 평가 프로토콜(학습 결과는 아직 진행 중)
+- `reports/crossval_protocol.md`: 분할과 평가 프로토콜
+- `reports/crossval_report.md`, `reports/crossval_summary.json`: 완료된 5-fold 결과와 환자 식별자 없는 집계
 - `docs/RESEARCH_DIRECTION.md`: 신규 팀원을 위한 연구 배경, 모델 선택과 향후 실험 방향
 
 ## 재현 환경
@@ -149,7 +165,7 @@ FLAIR 조건은 먼저 정합 영상을 생성하고 `--registered-flair-root`�
 
 ## 남은 평가 단계
 
-- 진행 중인 5-fold 교차검증의 나머지 학습·전체 out-of-fold 평가
+- 동일 분할에서 사전학습 모델과 미세조정 방법 비교
 - 가능하면 외부 데이터 검증과 반복 seed 실험
 
 ## 핵심 참고자료
